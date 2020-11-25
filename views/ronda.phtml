@@ -1,0 +1,95 @@
+<?php
+    include("./views/header-int-fc.phtml"); 
+ ?>
+<section class="alt-font padding-60px-tb md-padding-40px-tb full-screen">
+        <div class="container">
+            <h5 class="col-12">Seleccionar cliente</h5>
+            <form class="form-inline" method="POST">
+                    <div class="form-group mx-sm-2 ">
+                        <label>Cliente</label>
+                            <select id="clienteRonda" class="form-control ml-4 clienteRonda" placeholder="Clientes" name="clientes">
+                                <?php
+                                    foreach($cliente as $fila=>$valor){
+                                        echo '<option value="'.$valor['codigo'].'">'.$valor['nombre'].'</option>';
+                                    } 
+                                ?>
+                            </select>
+                    </div>
+                    <h5 class="col-12">Cargar puntos de control</h5>
+                    <div class="form-group mx-sm-2">
+                     <label>Secuencia</label>
+                        <input type="number" class="form-control ml-3" style="width:50px" id="ordenItemRonda">
+                    </div>
+                    <div class="form-group mx-sm-2 ">
+                        <label>Punto de control</label>
+                            <select id="puntoControlCliente" class="form-control ml-4" placeholder="Puntos de Control" name="puntocontrol">
+                            <option value="" selected="true" disabled="disabled">Seleccione un punto de control</option>
+                            </select>
+                    </div>
+                   
+                    <button type="button" class="btn btn-primary ml-4 mb-4 rounded-pill agregarItem" id="agregarItem">Agregar item</button>
+            </form>
+
+                <table class="table table-bordered col-8 table-fixed" id="tabla-items-ronda">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Sec</th>
+                            <th>Nombre</th>
+                            <th>Opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+
+                <h5 class="mt-5">Generar ronda</h5>
+               
+                    <div class="form-group mx-sm-2">
+                     <label>Nombre</label>
+                        <input class="form-control col-3 nombreRonda" id="nombreRonda" placeholder="Nombre de la ronda">
+                    </div>
+                    <button type="button" class="btn btn-success rounded-pill" onclick="guardarControl()" id="cargarRonda">Cargar Ronda</button>
+                
+
+                <div class="modal fade" id="actualizarControlModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Modificar control</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="POST">
+                                <div class="form-group" >
+                                    <label id="idControl" class="col-form-label">ID</label>
+                                    <input type="text" class="form-control" id="idControlActulizar" readonly>
+                                </div>
+                                <div class="form-group" >
+                                    <label id="modificarNombre" class="col-form-label">Nombre</label>
+                                    <input type="text" class="form-control" id="controlActualizar">
+                                </div>
+                                <div class="form-group">
+                                    <label for="objetivo" class="col-form-label">Objetivo</label>
+                                    <select class="form-control" id="modificarObjetivo">
+                                    <?php
+                                        foreach($objetivos as $fila=>$valor){
+                                            echo '<option id="objetivo" value="'.$valor['nombre'].'">'.$valor['nombre'].'</option>';
+                                        } 
+                                    ?>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                            <button type="button" class="btn btn-primary modificarControl">Modificar</button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</section>
+<!-- start footer -->
+<?php //include("./views/footer.phtml"); ?>

@@ -1,0 +1,130 @@
+<?php
+include("./views/header-int-fc.phtml");
+?>
+<div class="row">
+    <div style="background-color: #dddddd" class="col-12 p-5">
+        <h4 style="color:#00405d; margin-left:20%">Nueva Ronda</h4>
+    </div>
+</div>
+<section class="alt-font padding-60px-tb md-padding-40px-tb full-screen">
+    <div class="container">
+        <form class="form-inline" method="POST">
+            <div class="form-group col-12">
+                <label>Nombre:</label>
+                <input class="form-control nombreRonda ml-3" id="nombreRonda" placeholder="Nombre de la ronda">
+            </div>
+            <div class="form-group col-12">
+                <label>Cliente:</label>
+                <select id="clienteNuevaRonda" class="form-control ml-4 clienteNuevaRonda" placeholder="Clientes" name="clientes">
+                    <?php
+                    foreach ($cliente as $fila => $valor) {
+                        echo '<option value="' . $valor['codigo'] . '">' . $valor['nombre'] . '</option>';
+                    }
+                    ?>
+                </select>
+                <label class="mb-2 ml-3">Objetivo:</label>
+                <select id="objetivoClienteRonda" class="form-control ml-4 objetivoCliente" placeholder="Objetivo" name="objetivo" required>
+                    <option value="" selected="true" disabled="disabled">Seleccione un objetivo</option>
+                </select>
+            </div>
+
+            <em>
+                <h6 class="col-12 pt-3 black">Cargar puntos de control:</h6>
+            </em>
+            <div class="form-group mx-sm-2 ">
+                <label>Orden:</label>
+                <input class="form-control ml-3" style="width:50px" id="ordenItemRonda">
+                <label class="ml-3">Tiempo:</label>
+                <input class="form-control ml-3" style="width:50px" id="tiempoItemRonda">
+                <label class="ml-4">Puntos de control:</label>
+                <select id="puntoControlCliente" class="form-control ml-4" placeholder="Puntos de Control" name="puntocontrol">
+                    <option value="" selected="true" disabled="disabled">Seleccione un punto de control</option>
+                </select>
+                <label class="ml-4 mr-3">Indicadores: </label>
+                <div class=" border rounded p-2 mb-4">
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="checkbox" id="qrCheck" value="1" class="custom-control-input">
+                        <label class="custom-control-label" for="qrCheck">QR</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="checkbox" id="nfcCheck" value="1" class="custom-control-input">
+                        <label class="custom-control-label" for="nfcCheck">NFC</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="checkbox" id="llegueCheck" value="1" class="custom-control-input">
+                        <label class="custom-control-label" for="llegueCheck">Llegue</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-12 d-flex justify-content-end">
+                <button type="button" class="btn btn-info btn-sm ml-4 mb-4 rounded-pill agregarItem" id="agregarItem" disabled>Agregar item</button>
+
+            </div>
+
+        </form>
+
+        <table class="table col-12 table-fixed" id="tabla-items-ronda">
+            <thead class="thead-dark">
+                <tr>
+                    <th class="text-center w-5">Orden</th>
+                    <th class="text-center w-5">Tiempo</th>
+                    <th class="text-center w-5">Nombre</th>
+                    <th class="text-center w-5">QR</th>
+                    <th class="text-center w-5">NFC</th>
+                    <th class="text-center w-5">Llegue</th>
+                    <th class="text-center w-5"></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <br>
+        <hr>
+        <div class="col-12  d-flex justify-content-end">
+            <button type="button" class="btn btn-success btn-sm rounded-pill " onclick="guardarRonda()" id="cargarRonda">Cargar Ronda</button>
+        </div>
+
+
+        <div class="modal fade" id="actualizarControlModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modificar control</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST">
+                            <div class="form-group">
+                                <label id="idControl" class="col-form-label">ID</label>
+                                <input type="text" class="form-control" id="idControlActulizar" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label id="modificarNombre" class="col-form-label">Nombre</label>
+                                <input type="text" class="form-control" id="controlActualizar">
+                            </div>
+                            <div class="form-group">
+                                <label for="objetivo" class="col-form-label">Objetivo</label>
+                                <select class="form-control" id="modificarObjetivo">
+                                    <?php
+                                    foreach ($objetivos as $fila => $valor) {
+                                        echo '<option id="objetivo" value="' . $valor['nombre'] . '">' . $valor['nombre'] . '</option>';
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger rounded-pill btn-sm" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary rounded-pill btn-sm modificarControl">Modificar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- start footer -->
+<?php //include("./views/footer.phtml"); 
+?>

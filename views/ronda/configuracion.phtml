@@ -1,0 +1,188 @@
+<?php
+include("./views/header-int-fc.phtml");
+?>
+
+<div class="row">
+    <div style="background-color: #dddddd" class="col-12 p-5">
+        <h4 style="color:#00405d; margin-left:20%">Administracion de Rondas</h4>
+    </div>
+</div>
+<section class="alt-font padding-60px-tb md-padding-40px-tb full-screen">
+    <div class="container">
+        <form class="form-inline" method="POST">
+            <div class="form-group mx-sm-3 ">
+                <label class="mb-2">Clientes:</label>
+                <select class="form-control ml-3 ClienteRondas" id="clienteRondas" name="cliente">
+                    <option value="" selected="true" disabled="disabled" required>Seleccione un cliente</option>
+                    <?php
+
+                    foreach ($cliente as $fila => $valor) {
+                        echo '<option class="cliente" value="' . $valor['codigo'] . '">' . $valor['nombre'] . '</option>';
+                    }
+                    ?>
+                </select>
+                <label class="mb-2 ml-2">Objetivos:</label>
+                <select class="form-control ml-3 objetivosClienteAdminRonda" id="objetivosClienteAdminRonda" name="objetivos">
+                    <option value="" selected="true" disabled="disabled" required>Seleccione un objetivo</option>
+                </select>
+                <a href="../ronda/nuevaronda" type="button" id="agregarRonda" class="btn btn-info btn-sm mb-4 ml-4 rounded-pill agregarRonda">Agregar Ronda</a>
+            </div>
+
+        </form>
+        <div class="container">
+            <table class="table" id="tabla-rondas-cliente">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Nombre Ronda<span id="spanNombre" value="DESC" class="ml-1" type="button"><i id="botonFiltroNombre" value="nombre" class="fa fa-sort botonFiltroNombre"></i></span></th>
+                        <th scope="col">Fecha Creacion<span id="spanFecha" value="DESC" class="ml-1" type="button"><i id="botonFiltroFecha" value="fecha" class="fa fa-sort botonFiltroFecha"></i></span></th>
+                        <th scope="col">Estado<span id="spanEstado" value="DESC" class="ml-1" type="button"><i id="botonFiltroEstado" value="estado" class="fa fa-sort botonFiltroEstado"></i></span></th>
+                        <th class="text-center" scope="col"></th>
+                        <th class="text-center" scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="modal fade" id="actualizarControlModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modificar control</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST">
+
+                            <div class="form-group">
+                                <label id="idControl" class="col-form-label">ID</label>
+                                <input type="text" class="form-control" id="idControlActulizar" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label id="modificarNombre" class="col-form-label">Nombre</label>
+                                <input type="text" class="form-control" id="controlActualizar">
+                            </div>
+                            <div class="form-group">
+                                <label for="objetivo" class="col-form-label">Objetivo</label>
+                                <select class="form-control" id="modificarObjetivo">
+                                    <option id="optobjetivo" value="" selected="true" disabled="disabled" required>Seleccione un objetivo</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm rounded-pill " data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary btn-sm rounded-pill modificarControl">Modificar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalRonda" tabindex="-1" role="dialog" aria-hidden="true">
+
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalRondaTitle">Modificación de Ronda</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST">
+                        <div class="form-group">
+                            <label class="col-form-label">ID</label>
+                            <input type="text" class="form-control" id="idRonda" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Nombre</label>
+                            <input type="text" class="form-control" id="nombreRonda">
+                        </div>
+                        <div class="form-group">
+                            <label class="col-form-label">Estado</label>
+                            <select class="form-control" id="selectEstadosRonda">
+                                <option id="optestado" value="" disabled="disabled">Seleccione un estado</option>
+                                <option id="optestado1" value="1">Activo</option>
+                                <option id="optestado0" value="0">Inactivo</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger btn-sm rounded-pill" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary btn-sm rounded-pill" onClick="editarRonda()">Modificar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="modal fade bd-example-modal-xl" id="listarItemRondaModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title-items" id="modalModificacionRondaTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <input style="display: none;" name="idRondaModal" id="idRondaModal">
+                </div>
+                <div class="modal-body text-center ">
+                    <table id="tablaModalItemsRonda" class="table table-bordered">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th class="p-3" scope="col">Objetivo</th>
+                                <th class="p-3" scope="col">Orden</th>
+                                <th class="p-3" scope="col">Tiempo</th>
+                                <th class="p-3" scope="col">QR</th>
+                                <th class="p-3" scope="col">NFC</th>
+                                <th class="p-3" scope="col">Llegue</th>
+                                <th class="p-3" scope="col">Punto de Control</th>
+                                <th class="" scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+                    <hr>
+                    <div id="newItemTable" style="display:none">
+                        <h6>Agregar Item</h6>
+
+                        <table id="tablaModalAgregarItemsRonda" class="table table-bordered">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th class="p-3" scope="col">Objetivo</th>
+                                    <th class="p-3 newItemsOptions" scope="col">Punto de Control</th>
+                                    <th class="p-3 newItemsOptions" scope="col">Orden</th>
+                                    <th class="p-3 newItemsOptions" scope="col">Tiempo</th>
+                                    <th class="p-3 newItemsOptions" scope="col">QR</th>
+                                    <th class="p-3 newItemsOptions" scope="col">NFC</th>
+                                    <th class="p-3 newItemsOptions" scope="col">Llegue</th>
+                                    <th class="newItemsOptions" scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyNewItemRondaModal">
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer d-flex">
+                    <button id="newItemModalButton" type="button" class="btn btn-success btn-sm rounded-pill mr-auto" onClick="agregarItemTablaModal()">Agregar Item +</button>
+                    <button type="button" data-dismiss="modal" id="cancelModal" class="btn btn-danger btn-sm rounded-pill">Cancelar</button>
+                    <button type="button" class="btn btn-primary btn-sm rounded-pill" onClick="guardarItemsRonda()">Actualizar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</section>
+<!-- start footer -->
+<?php //include("./views/footer.phtml"); 
+?>

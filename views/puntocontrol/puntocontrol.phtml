@@ -1,0 +1,102 @@
+<?php
+include("./views/header-int-fc.phtml");
+?>
+<div class="row">
+    <div style="background-color: #dddddd" class="col-12 p-5">
+        <h4 style="color:#00405d; margin-left:20%">Puntos de Control</h4>
+    </div>
+</div>
+<section class="alt-font padding-60px-tb md-padding-40px-tb full-screen">
+    <div class="container">
+        <form class="form-inline" method="POST">
+            <div class="form-group mx-sm-3 ">
+                <label class="mb-2">Cliente</label>
+                <select class="form-control ml-4 clienteControl" id="cliente" name="cliente">
+                    <option value="" selected="true" disabled="disabled" required>Seleccione un cliente</option>
+                    <?php
+                    if ($_SESSION['idCliente']) {
+                        foreach ($cliente as $clave => $v) {
+                            if ($_SESSION['idCliente'] == $v['codigo']) {
+                                echo '<option class="opt-cliente" value="' . $v['codigo'] . '" selected="true"> ' . $v['nombre'] . '</option>';
+                            }
+                            echo '<option class="opt-cliente" value="' . $v['codigo'] . '"> ' . $v['nombre'] . '</option>';
+                        }
+                    } else {
+                        foreach ($cliente as $clave => $v) {
+                            echo '<option class="opt-cliente" value="' . $v['codigo'] . '"> ' . $v['nombre'] . '</option>';
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+            <div class="form-group mx-sm-3" required>
+                <label class="mb-2">Objetivo</label>
+                <select id="objetivo" class="form-control ml-4 objetivoCliente" placeholder="Objetivo" name="objetivo" required>
+                    <option value="" selected="true" disabled="disabled">Seleccione un objetivo</option>
+                </select>
+            </div>
+            <div class="form-group col-6" style="display:none" id="nombreControl">
+                <label class="mb-2">Nombre</label>
+                <input id="nombre-punto-control" type="text" class="form-control ml-3 " placeholder="Nombre" name="nombre-punto-control" required>
+            </div>
+            <div class="form-group mx-sm-3 col-12 justify-content-start ">
+                <button type="button" id="agregarControl" class="btn btn-info mb-4 ml-4 btn-sm rounded-pill agregarControl" disabled>Agregar Control</button>
+                <button type="button" id="guardarControlbtn" class="btn btn-success mb-4 ml-4 btn-sm rounded-pill guardarControl" style="display:none">Guardar Control</button>
+                <button type="button" id="cancelarCargaControlbtn" class="btn btn-danger mb-4 ml-4 btn-sm rounded-pill cancelarCarga" style="display:none">Cancelar</button>
+            </div>
+        </form>
+
+        <table class="table col-12 text-center" id="tabla-control">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Objetivo</th>
+                    <th scope="col"></th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <div class="modal fade" id="actualizarControlModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modificar control</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST">
+
+                            <div class="form-group">
+                                <label id="idControl" class="col-form-label">ID</label>
+                                <input type="text" class="form-control" id="idControlActulizar" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label id="modificarNombre" class="col-form-label">Nombre</label>
+                                <input type="text" class="form-control" id="controlActualizar">
+                            </div>
+                            <div class="form-group">
+                                <label class="col-form-label">Objetivo</label>
+                                <select class="form-control" id="modificarObjetivo">
+                                    <option id="optobjetivo" value="" selected="true" disabled="disabled" required>Seleccione un objetivo</option>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger btn-sm rounded-pill" data-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary btn-sm rounded-pill modificarControl">Modificar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- start footer -->
+<?php //include("./views/footer.phtml"); 
+?>

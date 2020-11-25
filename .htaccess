@@ -1,0 +1,32 @@
+# .htaccess file for configuring Apache for IctSocialMvc
+
+Options -Indexes
+
+RewriteEngine On
+#RewriteBase /
+
+
+RewriteRule ^(services)($|/) - [L]
+RewriteRule ^(consultation)($|/) - [L]
+RewriteRule ^(api) api/index.php [L]
+
+# front controller
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+
+# Para metodo GET, POST, PUT
+#RewriteRule ^api/([a-zA-Z]+)$ api.php
+#RewriteRule ^api/([a-zA-Z]+)/$ api.php
+
+# Para metodo GET por Id y metodo DELETE
+#RewriteRule ^api/([a-zA-Z]+)/([0-9]+)$ api.php
+#RewriteRule ^api/([a-zA-Z]+)/([0-9]+)/$ api.php
+
+#RewriteRule ^api/(.*)$ controllers/api/api.php?request=$1 [QSA,NC,L]
+#RewriteRule ^(.+)$ controllers/api/api.php?url=$1 [QSA,NC,L]
+
+RewriteRule !\.(pdf|js|ico|gif|jpg|png|css|rar|zip|tar|eot|svg|ttf|woff|woff2\.gz)$ index.php [L]
+
+
+AddType application/x-httpd-php .php .phtml

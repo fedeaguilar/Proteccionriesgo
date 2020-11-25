@@ -1,0 +1,19 @@
+version: '3'
+services:
+    proteccion:
+        build: .
+        image: php:7.2-apache
+        restart: always
+        expose:
+            - 80
+            - 443
+        ports: 
+            - 2912:80
+        extra_hosts:
+            - proteccion.local:127.0.0.1
+        hostname: proteccion.local
+        domainname: local 
+        environment:
+        - WEB_DOCUMENT_ROOT=/var/www/html
+        volumes:
+        - ./:var/www/html
